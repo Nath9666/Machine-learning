@@ -7,5 +7,3 @@ def setup():
     Df_dataY = pd.read_csv("Doc\Data_Y.csv")
     Df_dataMerge = pd.read_csv("Doc\Data_X.csv")
     return Df_dataX,Df_dataNewX,Df_dataY,Df_dataMerge
-
-export 
