@@ -4,6 +4,7 @@ import numpy as np
 import numpy as np #linear algebra
 import seaborn as sns #data visualization
 import matplotlib.pyplot as plt #data visualization
+from sklearn.preprocessing import MinMaxScaler
 #import sklearn.preprocessing as skp #machine learning (preprocessing)
 #import sklearn.cluster as skc #machine learning (clustering)
 
@@ -14,34 +15,6 @@ Df_dataNewX = pd.read_csv("Doc\DataNew_X.csv")
 Df_dataY = pd.read_csv("Doc\Data_Y.csv")
 DfMerge_DataXY = pd.merge(Df_dataX,Df_dataY,on="ID")
 
-# Todo Suppresion de la colonne ID dans le DataFrame DfMerge_DataXY
-
-
-"""
-#Fusion les tableaux X et new X
-cpt=0
-print(dataNext.shape)
-print("Df_dataY shape",Df_dataY.shape)
-for ID_data2 in Df_dataY['ID']:
-    find = False
-    for ID_dataNext in dataNext['ID']:
-        if ID_data2 == ID_dataNext:
-            find = True
-            break
-    if not find:
-        Dim = dataNext.shape[0]
-        dataNext.loc[Dim] = Df_dataY.loc[cpt]
-    cpt+=1
-print("Data Next:",dataNext.shape)
-"""
-
-"""
-#2 etape fusionner les data avec le Y grace à l'ID
-merge_data1_Y = pd.merge(Df_dataX,Df_dataY,on="ID")
-merge_data2_Y = pd.merge(Df_dataY,Df_dataY,on="ID")
-print("Merge Df_dataX et Y:",merge_data1_Y.shape)
-print("Merge Df_dataY et Y:",merge_data2_Y.shape)
-"""
 
 #Definition des différentes fonctions
 def VerifNullValueByCollumns(data,nameCollumns):
@@ -70,53 +43,138 @@ def NumberOfMisingValue(data):
     return data.isnull().sum()
 
 #Definition d'une sous partie de mon tableau => limitation de ma machine
-dfTest = DfMerge_DataXY.head(10)
+dfTest = DfMerge_DataXY.head(300)
+
+#On enlève les collones ID et ID day et contry juste pour voir les valeurs
+dfTest = dfTest.drop('ID',axis=1)
+dfTest = dfTest.drop('DAY_ID',axis=1)
+
+#on enlève la collones contry car elle ne possède pas de variable quantitative
+dfTest = dfTest.drop('COUNTRY',axis=1)
+
 #Print les info du dataX
 #! print(dfTest.info)
 
 #Print les donnees des 10 premiere lignes
-#!print(dfTest.describe())
+#! print(dfTest.describe())
 
 #Afficher la sommes des valeurs nulles en fonctions des collones
-#!print(dfTest.isnull().sum()/dfTest.shape[0]*100)
+#! print(dfTest.isnull().sum()/dfTest.shape[0]*100)
 
 #Afficher les valeurs dupliquers
 #!print(dfTest[dfTest.duplicated(keep=False)])
 
-#Analyse exploratoire des données
+#Normalize les values de Df_Test
+ages = dfTest.DE_CONSUMPTION
 
-    #todo Histogramme des distributions de leur plage de valeurs
+# create a MinMaxScaler object
+scaler = MinMaxScaler()
 
-#Definition du graphiques
-main = plt.figure(figsize=(12,16))
-for num,collums_name in enumerate(dfTest.describe().columns):
-    plt.subplot(5,2,num+1)
-    sns.distplot(x=dfTest[collums_name])
-    plt.xlabel(collums_name)
-    plt.title('{} Distribution'.format(collums_name))
-    # plt.subplots_adjust(wspace=.2, hspace=.5)
-    plt.tight_layout()
+# normalize the ages using fit_transform method
+normalized = scaler.fit_transform([[age] for age in ages])
+print(normalized)
 
-test = "DE_CONSUMPTION"
-#plt.subplot(5,2,4)
+#*Analyse exploratoire des données
 
-#sns.displot(x=dfTest[test])
-plt.xlabel(test)
-plt.title('{} Distribution'.format(test))
-#plt.subplots_adjust(wspace=.2, hspace=1)
-plt.tight_layout()
-#dfTest[test].plot(kind='kde')
-dfTest[test].plot(kind="hist")
-plt.figure
+    #Histogramme des distributions des colonnes
+
+#Fonction pour afficher le graphique de distribution en fonction d'un data frame de 8 colonne max
+def AfficheHistogram(data):
+    plt.figure(figsize=(12,16))
+    for num,collums_name in enumerate(data.describe().columns):
+        plt.subplot(4,2,num+1)
+        #sns.histplot(x=df1[collums_name])
+        data[collums_name].plot(kind="hist",y="distribution")
+        plt.title('{} Distribution'.format(collums_name))
+        #plt.subplots_adjust(wspace=.2, hspace=.5)
+        plt.tight_layout()
+
+def SaveHistoByCollumn(df,namecolumns):
+    fig = plt.figure(figsize=(12,16))
+    df[namecolumns].plot(kind="hist")
+    plt.title('{} BoxPlot'.format(namecolumns))
+    plt.savefig('Graph/Graph_Histogram/%s.png' % (df[namecolumns].name))
+    plt.close(fig)
+
+"""
+#*Toute les distribution des différentes colonnes
+AfficheHistogram(df1)
+AfficheHistogram(df2)
+AfficheHistogram(df3)
+AfficheHistogram(df4)
 plt.show()
+"""
 
+    #Affiche de leur plage de valeur grace au box plot
 
+#Fonction affiche la plage de valeur en fonction d'un data frame de 8 coloonnes max
+def SaveBoxPlot(df,namecolumns):
+    fig = plt.figure(figsize=(12,16))
+    df[namecolumns].plot(kind="box")
+    plt.title('{} BoxPlot'.format(namecolumns))
+    plt.savefig('Graph/Graph_BoxPlot/%s.png' % (df[namecolumns].name))
+    plt.close(fig)
+
+def NumberOutiliners(df,colons):
+    # Calculate the quartiles and IQR for column A
+    Q1 = df[colons].quantile(0.25)
+    Q3 = df[colons].quantile(0.75)
+    IQR = Q3 - Q1
+
+    # Identify the outliers in column A
+    outliers = df[(df[colons] < Q1 - 1.5*IQR) | (df[colons] > Q3 + 1.5*IQR)]
+
+    # Print the number of outliers
+    print("Number of outliers:", len(outliers))
 #todo varaible caractéristique (collonne target) et variable cible(les celle decidé)
-    #hitpogramme voir au dessus
-    #diagramme en boite
     #graphique de dispersion
+        #Recuperer la liste de chaque colonnes sans la variable target
+
+
+#*Creer les differents graphiques de dispersions des données des collones avec la target
+def SaveDispersionGraph(data,name):
+    fig = plt.figure(figsize=(8,6))
+    sns.scatterplot(x=data[name], y=data.TARGET)
+    plt.title('DE_CONSUMPTION vs TARGET')
+    plt.savefig('Graph/Graph_Dispersion/%s_by_%s.png' % (data[name].name,data.TARGET.name))
+    plt.close(fig)
+    #plt.show()
+
+"""
+
+for collumns_name in dfTest.columns:
+    Dispersion(dfTest,collumns_name)
+    SaveBoxPlot(dfTest,collumns_name)
+    SaveHistoByCollumn(dfTest,collumns_name)
+"""
+
+"""
+SaveBoxPlot(DfMerge_DataXY,'DE_CONSUMPTION')
+print(DfMerge_DataXY.DE_CONSUMPTION.describe())
+SaveHistoByCollumn(DfMerge_DataXY,'DE_CONSUMPTION')
+"""
+
+"""
+for col in dfTest.columns:
+    SaveBoxPlot(dfTest,col)
+    SaveHistoByCollumn(dfTest,col)
+    SaveDispersionGraph(dfTest,col)
+"""
+
+NumberOutiliners(dfTest,"DE_CONSUMPTION")
+
 
 #todo correlation des varaibles entre elles 
+"""
+correlation_metrics=dfTest.corr()
+print(correlation_metrics)
+fig = plt.figure(figsize=(14,9))
+sns.heatmap(correlation_metrics,square=True, annot=True, vmax=1, vmin=-1, cmap='RdBu')
+plt.title('Correlation Between Variables', size=14)
+plt.show()
+"""
+
 #todo correlation entre le colonnes choisie et Target
+
 
 #todo definir clairement ou sont les données
