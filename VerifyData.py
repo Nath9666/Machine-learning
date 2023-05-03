@@ -1,7 +1,6 @@
 #Import des différentes librairie que l'on à besoin
 import pandas as pd
 import numpy as np
-import numpy as np #linear algebra
 import seaborn as sns #data visualization
 import matplotlib.pyplot as plt #data visualization
 from sklearn.preprocessing import MinMaxScaler
@@ -64,15 +63,6 @@ dfTest = dfTest.drop('COUNTRY',axis=1)
 #Afficher les valeurs dupliquers
 #!print(dfTest[dfTest.duplicated(keep=False)])
 
-#Normalize les values de Df_Test
-ages = dfTest.DE_CONSUMPTION
-
-# create a MinMaxScaler object
-scaler = MinMaxScaler()
-
-# normalize the ages using fit_transform method
-normalized = scaler.fit_transform([[age] for age in ages])
-print(normalized)
 
 #*Analyse exploratoire des données
 
@@ -110,7 +100,7 @@ plt.show()
 #Fonction affiche la plage de valeur en fonction d'un data frame de 8 coloonnes max
 def SaveBoxPlot(df,namecolumns):
     fig = plt.figure(figsize=(12,16))
-    df[namecolumns].plot(kind="box")
+    df[namecolumns].plot(kind="kde")
     plt.title('{} BoxPlot'.format(namecolumns))
     plt.savefig('Graph/Graph_BoxPlot/%s.png' % (df[namecolumns].name))
     plt.close(fig)
