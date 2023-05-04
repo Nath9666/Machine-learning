@@ -45,8 +45,8 @@ def NumberOfMisingValue(data):
 dfTest = DfMerge_DataXY.head(300)
 
 #On enlève les collones ID et ID day et contry juste pour voir les valeurs
-dfTest = dfTest.drop('ID',axis=1)
-dfTest = dfTest.drop('DAY_ID',axis=1)
+#!dfTest = dfTest.drop('ID',axis=1)
+#!dfTest = dfTest.drop('DAY_ID',axis=1)
 
 #on enlève la collones contry car elle ne possède pas de variable quantitative
 dfTest = dfTest.drop('COUNTRY',axis=1)
@@ -155,14 +155,13 @@ NumberOutiliners(dfTest,"DE_CONSUMPTION")
 
 
 #todo correlation des varaibles entre elles 
-"""
-correlation_metrics=dfTest.corr()
+"""correlation_metrics=dfTest.corr()
 print(correlation_metrics)
 fig = plt.figure(figsize=(14,9))
 sns.heatmap(correlation_metrics,square=True, annot=True, vmax=1, vmin=-1, cmap='RdBu')
 plt.title('Correlation Between Variables', size=14)
-plt.show()
-"""
+plt.show()"""
+
 
 #todo correlation entre le colonnes choisie et Target
 

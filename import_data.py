@@ -40,8 +40,6 @@ FR_cols = [col for col in df_FR.columns if col.startswith('FR') or col in Collon
 df_XY_DE = df_DE.loc[:,DE_cols]
 df_XY_FR = df_FR.loc[:,FR_cols]
 
-df_XY_DE = df_XY_DE.sort_values(by='DAY_ID')
-df_XY_FR = df_XY_FR.sort_values(by='DAY_ID')
 
 #Supression de la collones id_day id et country
 col = ['ID', 'COUNTRY','DAY_ID']
