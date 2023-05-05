@@ -12,18 +12,20 @@ x_new = dfNew_DE[df_XY_DE_features]
 modelLineaire = LinearRegression()
 
 # entraînement du modèle
-modelLineaire.fit(X, y)
+result = modelLineaire.fit(X, y)
 
 # prédictions sur de nouvelles données
 y_new = modelLineaire.predict(x_new)
+print(y_new,y)
 print('Coefficient de la pente :', modelLineaire.coef_)
 print('Ordonnée à l\'origine :', modelLineaire.intercept_)
 print('Prédiction pour x_new :', y_new)
 
+
 #affichage des point et de la courbes
 fig = plt.figure(figsize=(14,9))
-plt.scatter(x_new,y_new)
+#plt.scatter(x_new,y_new)
 plt.plot(x_new,y_new)
 plt.xlabel("New Point")
-plt.ylabel("First Point")
+plt.ylabel("Predict point")
 plt.show()

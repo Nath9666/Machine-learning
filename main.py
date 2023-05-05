@@ -10,8 +10,8 @@ Df_dataNewX = pd.read_csv("Doc\DataNew_X.csv")
 Df_dataY = pd.read_csv("Doc\Data_Y.csv")
 
 #fussionner les data X et Y et limitation pour 100 data
-DfMerge_DataXY = pd.merge(Df_dataX,Df_dataY,on="ID")
-DfMerge_DatanewX = Df_dataNewX
+DfMerge_DataXY = pd.merge(Df_dataX,Df_dataY,on="ID").head(200)
+DfMerge_DatanewX = Df_dataNewX.head(200)
 
 
 # Créer un groupe pour chaque pays
@@ -105,7 +105,7 @@ def SaveHistoByCollumn(df,namecolumns):
 df_XY_DE.fillna(df_XY_DE.mean(), inplace=True)
 df_XY_FR.fillna(df_XY_DE.mean(), inplace=True)
 dfNew_DE.fillna(df_XY_DE.mean(), inplace=True)
-
+dfNew_FR.fillna(df_XY_DE.mean(), inplace=True)
 
 df_XY_FR_features = ["FR_CONSUPTION","FR_DE_EXCHANGE","FR_NET_IMPORT","FR_WIND","FR_RESIDUAL_LOAD"]
 df_XY_DE_features = ["DE_FR_EXCHANGE", "DE_NET_EXPORT", "DE_COAL","DE_WIND","DE_RESIDUAL_LOAD","DE_WINDPOW"]
