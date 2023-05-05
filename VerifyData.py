@@ -128,7 +128,6 @@ def SaveDispersionGraph(data,name):
     plt.title('DE_CONSUMPTION vs TARGET')
     plt.savefig('Graph/Graph_Dispersion/%s_by_%s.png' % (data[name].name,data.TARGET.name))
     plt.close(fig)
-    #plt.show()
 
 """
 

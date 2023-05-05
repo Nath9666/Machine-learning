@@ -1,5 +1,5 @@
 from sklearn.tree import DecisionTreeRegressor
-from import_data import *
+from main import *
 
 Df_dataX,Df_dataNewX,Df_dataY,Df_dataMerge = setup()
 

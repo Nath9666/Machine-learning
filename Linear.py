@@ -1,11 +1,12 @@
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
+from main import df_XY_DE,df_XY_FR,df_XY_FR_features,df_XY_DE_features,dfNew_DE,dfNew_FR
 
 # données d'exemple
-X = np.array([1, 2, 3, 4, 5]).reshape((-1, 1))
-y = np.array([2, 4, 5, 4, 5])
-x_new = np.array([1, 2, 3, 4, 5]).reshape((-1, 1))
+X = df_XY_DE[df_XY_DE_features]
+y = df_XY_DE["TARGET"]
+x_new = dfNew_DE[df_XY_DE_features]
 
 # création du modèle
 modelLineaire = LinearRegression()
