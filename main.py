@@ -30,12 +30,14 @@ dfNew_DE = groupedNew.get_group('DE')
 ColloneGroup = ['COAL_RET', 'GAS_RET', 'ID', 'CARBON_RET', 'DAY_ID', 'COUNTRY']
 DE_cols = [col for col in df_DE.columns if col.startswith('DE') or col in ColloneGroup or col =='TARGET']
 FR_cols = [col for col in df_FR.columns if col.startswith('FR') or col in ColloneGroup or col =='TARGET']
+
 DE_colsNew = [col for col in df_DE.columns if col.startswith('DE') or col in ColloneGroup]
 FR_colsNew = [col for col in df_FR.columns if col.startswith('FR') or col in ColloneGroup]
 
 #Recuperation des donnees
 df_XY_DE = df_DE.loc[:,DE_cols]
 df_XY_FR = df_FR.loc[:,FR_cols]
+
 dfNew_FR = dfNew_FR.loc[:,FR_colsNew]
 dfNew_DE = dfNew_DE.loc[:,DE_colsNew]
 
@@ -44,6 +46,7 @@ dfNew_DE = dfNew_DE.loc[:,DE_colsNew]
 col = ['ID', 'COUNTRY','DAY_ID']
 df_XY_DE = df_XY_DE.drop(col,axis=1)
 df_XY_FR = df_XY_FR.drop(col,axis=1)
+
 dfNew_FR = dfNew_FR.drop(col,axis=1)
 dfNew_DE = dfNew_DE.drop(col,axis=1)
 
@@ -71,8 +74,9 @@ fig = plt.figure(figsize=(14,9))
 sns.heatmap(correlation_metrics,square=True, annot=True, vmax=1, vmin=-1, cmap='RdBu')
 plt.title('Correlation Between Variables in DE', size=14)
 plt.savefig('Graph/MatrixCorrelation/DE_correlation.png')
-plt.close(fig)
-plt.show()
+#plt.show()
+#plt.close(fig)
+
 
 #Matrice de correlation de la France
 correlation_metrics=df_XY_FR.corr()
@@ -80,7 +84,8 @@ fig = plt.figure(figsize=(14,9))
 sns.heatmap(correlation_metrics,square=True, annot=True, vmax=1, vmin=-1, cmap='RdBu')
 plt.title('Correlation Between Variables in DE', size=14)
 plt.savefig('Graph/MatrixCorrelation/FR_correlation.png')
-plt.close(fig)
+#plt.show()
+#plt.close(fig)
 
 def SaveDispersionGraph(data,name):
     fig = plt.figure(figsize=(8,6))
@@ -101,14 +106,12 @@ def SaveHistoByCollumn(df,namecolumns):
     plt.savefig('Graph/Graph_Histogram/%s.png' % (df[namecolumns].name))
     plt.close(fig)
 
+
 #remplacement des valeurs nulls par la moyenne de chaque colonees
 df_XY_DE.fillna(df_XY_DE.mean(), inplace=True)
-df_XY_FR.fillna(df_XY_DE.mean(), inplace=True)
-dfNew_DE.fillna(df_XY_DE.mean(), inplace=True)
-dfNew_FR.fillna(df_XY_DE.mean(), inplace=True)
+df_XY_FR.fillna(df_XY_FR.mean(), inplace=True)
+dfNew_DE.fillna(dfNew_DE.mean(), inplace=True)
+dfNew_FR.fillna(dfNew_FR.mean(), inplace=True)
 
-df_XY_FR_features = ["FR_CONSUPTION","FR_DE_EXCHANGE","FR_NET_IMPORT","FR_WIND","FR_RESIDUAL_LOAD"]
+df_XY_FR_features = ["FR_CONSUMPTION","FR_DE_EXCHANGE","FR_NET_IMPORT","FR_WIND","FR_RESIDUAL_LOAD"]
 df_XY_DE_features = ["DE_FR_EXCHANGE", "DE_NET_EXPORT", "DE_COAL","DE_WIND","DE_RESIDUAL_LOAD","DE_WINDPOW"]
-
-
-
