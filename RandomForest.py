@@ -1,8 +1,10 @@
 from test import EvalModel
-from sklearn.linear_model import Lasso
+from sklearn.ensemble import RandomForestRegressor
 from main import df_XY_DE,df_XY_FR,df_XY_FR_features,df_XY_DE_features,dfNew_DE,dfNew_FR
 from sklearn.model_selection import GridSearchCV
 
+
+#! Proble sur ces donnée là faire très attention
 #Initialisation des données pour l'allemagne
 X_DE = df_XY_DE[df_XY_DE_features]
 y_DE = df_XY_DE["TARGET"]
@@ -18,20 +20,20 @@ X_train_DE, X_test_DE, y_train_DE, y_test_DE = train_test_split(X_DE, y_DE, test
 X_train_FR, X_test_FR, y_train_FR, y_test_FR = train_test_split(X_FR, y_FR, test_size=0.2, random_state=42)
 
 #Creation du model Ridge
-ModelLassoDE = Lasso()
-ModelLassoFR = Lasso()
+ModelRidgeDE = RandomForestRegressor(100)
+ModelRidgeFR = RandomForestRegressor(100)
 
 #Entrainement du model de DecisionTreeRegressor
-ModelLassoDE.fit(X_train_DE,y_train_DE)
-ModelLassoFR.fit(X_train_FR,y_train_FR)
+ModelRidgeDE.fit(X_train_DE,y_train_DE)
+ModelRidgeFR.fit(X_train_FR,y_train_FR)
 
 #Affichage du score => coefficient de determination
-print("Score",ModelLassoDE.score(X_train_DE,y_train_DE))
-print("Score",ModelLassoFR.score(X_train_FR,y_train_FR))
+print("Score",ModelRidgeDE.score(X_train_DE,y_train_DE))
+print("Score",ModelRidgeFR.score(X_train_FR,y_train_FR))
 
 #Prediction des données de test
-y_pred_DE = ModelLassoDE.predict(X_test_DE)
-y_pred_FR = ModelLassoFR.predict(X_test_FR)
+y_pred_DE = ModelRidgeDE.predict(X_test_DE)
+y_pred_FR = ModelRidgeFR.predict(X_test_FR)
 
 #Evaluation du model
 print('---Eval du model pour l allemagne')
@@ -43,15 +45,13 @@ print('\n---Changement des hyperparametre\n')
 
 # définition des hyperparamètres à tester
 param_grid = {
-    'alpha': [0.001, 0.01, 0.1, 1, 10, 100],
-    'max_iter': [1000, 5000, 10000, 50000],
-    'tol': [1e-4, 1e-3, 1e-2],
-    'selection': ['cyclic', 'random']
+    'n_estimators': [100,200,500],
+    'criterion': ['squared_error', 'absolute_error', 'friedman_mse', 'poisson']
 }
 
 # recherche par validation croisée pour trouver les meilleurs hyperparamètres
-grid_search_DE = GridSearchCV(ModelLassoDE, param_grid, cv=5, scoring='neg_mean_squared_error')
-grid_search_FR = GridSearchCV(ModelLassoFR, param_grid, cv=5, scoring='neg_mean_squared_error')
+grid_search_DE = GridSearchCV(ModelRidgeDE, param_grid, cv=5, scoring='neg_mean_squared_error')
+grid_search_FR = GridSearchCV(ModelRidgeFR, param_grid, cv=5, scoring='neg_mean_squared_error')
 
 grid_search_DE.fit(X_train_DE, y_train_DE)
 grid_search_FR.fit(X_train_FR, y_train_FR)
@@ -74,11 +74,11 @@ y_pred_FR = grid_search_FR.predict(X_test_FR)
 
 #Evaluation du model
 print('---Eval du model pour l allemegne')
-#EvalModel(y_pred_DE,y_test_DE)
+EvalModel(y_pred_DE,y_test_DE)
 print('---Eval du model pour la france')
-#EvalModel(y_pred_FR,y_test_FR)
+EvalModel(y_pred_FR,y_test_FR)
 
 
 #Prediction des donnée de newX
-y_pred_DE = ModelLassoDE.predict(X_New_DE)
-y_pred_FR = ModelLassoFR.predict(X_New_FR)
+y_pred_DE = ModelRidgeDE.predict(X_New_DE)
+y_pred_FR = ModelRidgeFR.predict(X_New_FR)

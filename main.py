@@ -14,6 +14,7 @@ DfMerge_DataXY = pd.merge(Df_dataX,Df_dataY,on="ID").head(200)
 DfMerge_DatanewX = Df_dataNewX.head(200)
 
 
+
 # Créer un groupe pour chaque pays
 grouped = DfMerge_DataXY.groupby('COUNTRY')
 groupedNew = DfMerge_DatanewX.groupby('COUNTRY')
