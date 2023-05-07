@@ -74,9 +74,9 @@ correlation_metrics=df_XY_DE.corr()
 fig = plt.figure(figsize=(14,9))
 sns.heatmap(correlation_metrics,square=True, annot=True, vmax=1, vmin=-1, cmap='RdBu')
 plt.title('Correlation Between Variables in DE', size=14)
-plt.savefig('Graph/MatrixCorrelation/DE_correlation.png')
-#plt.show()
-#plt.close(fig)
+plt.savefig('DE/DE_correlation.png')
+plt.show()
+plt.close(fig)
 
 
 #Matrice de correlation de la France
@@ -84,28 +84,46 @@ correlation_metrics=df_XY_FR.corr()
 fig = plt.figure(figsize=(14,9))
 sns.heatmap(correlation_metrics,square=True, annot=True, vmax=1, vmin=-1, cmap='RdBu')
 plt.title('Correlation Between Variables in DE', size=14)
-plt.savefig('Graph/MatrixCorrelation/FR_correlation.png')
-#plt.show()
-#plt.close(fig)
+plt.savefig('FR/FR_correlation.png')
+plt.show()
+plt.close(fig)
 
-def SaveDispersionGraph(data,name):
+def SaveDispersionGraph(data,name,source):
     fig = plt.figure(figsize=(8,6))
     sns.scatterplot(x=data[name], y=data.TARGET)
-    plt.title('DE_CONSUMPTION vs TARGET')
-    plt.savefig('Graph/Graph_Dispersion/%s_by_%s.png' % (data[name].name,data.TARGET.name))
+    plt.title(data[name].name + "vs" + data.TARGET.name)
+    plt.savefig(source+'/Graph_Dispersion/%s_by_%s.png' % (data[name].name,data.TARGET.name))
     plt.close(fig)
-def SaveBoxPlot(df,namecolumns):
+def SaveKDE(df,namecolumns,source):
     fig = plt.figure(figsize=(12,16))
     df[namecolumns].plot(kind="kde")
     plt.title('{} BoxPlot'.format(namecolumns))
-    plt.savefig('Graph/Graph_BoxPlot/%s.png' % (df[namecolumns].name))
+    plt.savefig(source+'/Graph_KDE/%s.png' % (df[namecolumns].name))
     plt.close(fig)
-def SaveHistoByCollumn(df,namecolumns):
+def SaveHistoByCollumn(df,namecolumns,source):
     fig = plt.figure(figsize=(12,16))
     df[namecolumns].plot(kind="hist")
     plt.title('{} BoxPlot'.format(namecolumns))
-    plt.savefig('Graph/Graph_Histogram/%s.png' % (df[namecolumns].name))
+    plt.savefig(source+'/Graph_Histogram/%s.png' % (df[namecolumns].name))
     plt.close(fig)
+def SaveBoxPlot(df,column,source):
+    fig = plt.figure(figsize=(12,16))
+    df.boxplot(column) 
+    plt.title('{} BoxPlot'.format(column))
+    plt.savefig(source+'/Graph_BoxPlot/%s.png' % (df[column].name))
+    plt.close(fig)
+
+for column in df_XY_DE.columns:
+    SaveDispersionGraph(df_XY_DE,column,"DE")
+    SaveKDE(df_XY_DE,column,"DE")
+    SaveBoxPlot(df_XY_DE,column,"DE")
+    SaveHistoByCollumn(df_XY_DE,column,"DE")
+
+for column in df_XY_FR.columns:
+    SaveDispersionGraph(df_XY_FR,column,"FR")
+    SaveBoxPlot(df_XY_FR,column,"FR")
+    SaveKDE(df_XY_DE,column,"FR")
+    SaveHistoByCollumn(df_XY_FR,column,"FR")
 
 
 #remplacement des valeurs nulls par la moyenne de chaque colonees
