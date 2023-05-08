@@ -14,7 +14,6 @@ DfMerge_DataXY = pd.merge(Df_dataX,Df_dataY,on="ID").head(200)
 DfMerge_DatanewX = Df_dataNewX.head(200)
 
 
-
 # Créer un groupe pour chaque pays
 grouped = DfMerge_DataXY.groupby('COUNTRY')
 groupedNew = DfMerge_DatanewX.groupby('COUNTRY')
@@ -52,20 +51,16 @@ dfNew_FR = dfNew_FR.drop(col,axis=1)
 dfNew_DE = dfNew_DE.drop(col,axis=1)
 
 #verifiez qu'il n'y a pas de doublons dans les 2 tables
-"""
-print(df_XY_DE[df_XY_DE.duplicated(keep=False)])
+"""print(df_XY_DE[df_XY_DE.duplicated(keep=False)])
 print(df_XY_FR[df_XY_FR.duplicated(keep=False)])
 print(dfNew_FR[dfNew_FR.duplicated(keep=False)])
-print(dfNew_DE[dfNew_DE.duplicated(keep=False)])
-"""
+print(dfNew_DE[dfNew_DE.duplicated(keep=False)])"""
 
 #verification des valeurs nulles
-"""
-print(df_XY_DE.isnull().sum()/df_XY_DE.shape[0]*100)
+"""print(df_XY_DE.isnull().sum()/df_XY_DE.shape[0]*100)
 print(df_XY_FR.isnull().sum()/df_XY_FR.shape[0]*100)
 print(dfNew_FR.isnull().sum()/dfNew_FR.shape[0]*100)
-print(dfNew_DE.isnull().sum()/dfNew_DE.shape[0]*100)
-"""
+print(dfNew_DE.isnull().sum()/dfNew_DE.shape[0]*100)"""
 
 #Affichage et sauvegarde des matrice de correlation
 
@@ -75,8 +70,8 @@ fig = plt.figure(figsize=(14,9))
 sns.heatmap(correlation_metrics,square=True, annot=True, vmax=1, vmin=-1, cmap='RdBu')
 plt.title('Correlation Between Variables in DE', size=14)
 plt.savefig('DE/DE_correlation.png')
-plt.show()
-plt.close(fig)
+#plt.show()
+#plt.close(fig)
 
 
 #Matrice de correlation de la France
@@ -85,8 +80,8 @@ fig = plt.figure(figsize=(14,9))
 sns.heatmap(correlation_metrics,square=True, annot=True, vmax=1, vmin=-1, cmap='RdBu')
 plt.title('Correlation Between Variables in DE', size=14)
 plt.savefig('FR/FR_correlation.png')
-plt.show()
-plt.close(fig)
+#plt.show()
+#plt.close(fig)
 
 def SaveDispersionGraph(data,name,source):
     fig = plt.figure(figsize=(8,6))
@@ -113,7 +108,7 @@ def SaveBoxPlot(df,column,source):
     plt.savefig(source+'/Graph_BoxPlot/%s.png' % (df[column].name))
     plt.close(fig)
 
-for column in df_XY_DE.columns:
+"""for column in df_XY_DE.columns:
     SaveDispersionGraph(df_XY_DE,column,"DE")
     SaveKDE(df_XY_DE,column,"DE")
     SaveBoxPlot(df_XY_DE,column,"DE")
@@ -123,7 +118,7 @@ for column in df_XY_FR.columns:
     SaveDispersionGraph(df_XY_FR,column,"FR")
     SaveBoxPlot(df_XY_FR,column,"FR")
     SaveKDE(df_XY_DE,column,"FR")
-    SaveHistoByCollumn(df_XY_FR,column,"FR")
+    SaveHistoByCollumn(df_XY_FR,column,"FR")"""
 
 
 #remplacement des valeurs nulls par la moyenne de chaque colonees

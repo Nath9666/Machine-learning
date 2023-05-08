@@ -34,7 +34,7 @@ y_pred_DE = ModelLineaireDE.predict(X_test_DE)
 y_pred_FR = ModelLineaireFR.predict(X_test_FR)
 
 #Evaluation du model
-print('---Eval du model pour l allemegne')
+print('---Eval du model pour l allemagne')
 EvalModel(y_pred_DE,y_test_DE)
 print('---Eval du model pour la france')
 EvalModel(y_pred_FR,y_test_FR)

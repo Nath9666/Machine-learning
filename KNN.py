@@ -18,8 +18,8 @@ X_train_DE, X_test_DE, y_train_DE, y_test_DE = train_test_split(X_DE, y_DE, test
 X_train_FR, X_test_FR, y_train_FR, y_test_FR = train_test_split(X_FR, y_FR, test_size=0.2, random_state=42)
 
 #Creation du model linéaire
-ModelKnnRegressorDE = KNeighborsRegressor(n_neighbors=3)
-ModelKnnRegressorFR = KNeighborsRegressor(n_neighbors=3)
+ModelKnnRegressorDE = KNeighborsRegressor(n_neighbors=6)
+ModelKnnRegressorFR = KNeighborsRegressor(n_neighbors=6)
 
 #Entrainement du model de DecisionTreeRegressor
 ModelKnnRegressorDE.fit(X_train_DE,y_train_DE)
@@ -75,7 +75,7 @@ y_pred_DE = grid_search_DE.predict(X_test_DE)
 y_pred_FR = grid_search_FR.predict(X_test_FR)
 
 #Evaluation du model
-print('\n---Eval du model pour l allemegne')
+print('\n---Eval du model pour l allemagne')
 EvalModel(y_pred_DE,y_test_DE)
 print('\n---Eval du model pour la france')
 EvalModel(y_pred_FR,y_test_FR)
@@ -84,3 +84,5 @@ EvalModel(y_pred_FR,y_test_FR)
 #Prediction des donnée de newX
 y_pred_DE = ModelKnnRegressorDE.predict(X_New_DE)
 y_pred_FR = ModelKnnRegressorFR.predict(X_New_FR)
+print("y_predDE",y_pred_DE)
+print("y_predFR",y_pred_FR)

@@ -19,7 +19,7 @@ from sklearn.model_selection import train_test_split
 X_train_DE, X_test_DE, y_train_DE, y_test_DE = train_test_split(X_DE, y_DE, test_size=0.2, random_state=42)
 X_train_FR, X_test_FR, y_train_FR, y_test_FR = train_test_split(X_FR, y_FR, test_size=0.2, random_state=42)
 
-#Creation du model Ridge
+#Creation du model RandomForest
 ModelRidgeDE = RandomForestRegressor(100)
 ModelRidgeFR = RandomForestRegressor(100)
 
@@ -73,7 +73,7 @@ y_pred_DE = grid_search_DE.predict(X_test_DE)
 y_pred_FR = grid_search_FR.predict(X_test_FR)
 
 #Evaluation du model
-print('---Eval du model pour l allemegne')
+print('---Eval du model pour l allemagne')
 EvalModel(y_pred_DE,y_test_DE)
 print('---Eval du model pour la france')
 EvalModel(y_pred_FR,y_test_FR)
