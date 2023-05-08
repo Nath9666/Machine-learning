@@ -9,7 +9,7 @@ Df_dataX = pd.read_csv("Doc\Data_X.csv")
 Df_dataNewX = pd.read_csv("Doc\DataNew_X.csv")
 Df_dataY = pd.read_csv("Doc\Data_Y.csv")
 
-#fussionner les data X et Y et limitation pour 100 data
+#fussionner les data X et Y et limitation pour 200 data
 DfMerge_DataXY = pd.merge(Df_dataX,Df_dataY,on="ID").head(200)
 DfMerge_DatanewX = Df_dataNewX.head(200)
 
@@ -117,9 +117,9 @@ def SaveBoxPlot(df,column,source):
 for column in df_XY_FR.columns:
     SaveDispersionGraph(df_XY_FR,column,"FR")
     SaveBoxPlot(df_XY_FR,column,"FR")
-    SaveKDE(df_XY_DE,column,"FR")
-    SaveHistoByCollumn(df_XY_FR,column,"FR")"""
-
+    SaveKDE(df_XY_FR,column,"FR")
+    SaveHistoByCollumn(df_XY_FR,column,"FR")
+"""
 
 #remplacement des valeurs nulls par la moyenne de chaque colonees
 df_XY_DE.fillna(df_XY_DE.mean(), inplace=True)
